@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_CONFIG } from '../lib/config';
 
 const API_URL = `${import.meta.env.VITE_BACKEND_API}`;
 
@@ -38,7 +39,7 @@ export interface RequestLocation {
 export const requestService = {
   getRequestLocationMap: async (requestId: string): Promise<RequestLocation> => {
     try {
-      const response = await axios.get(`${API_URL}/request/map/${requestId}`, {
+      const response = await axios.get(API_CONFIG.getApiUrl(`request/map/${requestId}`), {
         withCredentials: true
       });
       

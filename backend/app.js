@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 const User = require("./models/user.model");
 const ejsMate = require("ejs-mate");
@@ -16,15 +16,19 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
 dotenv.config();
+
+// Handle CORS
 app.use(
   cors({
-
-    origin: [process.env.FRONTEND_URL], // Or an array of allowed origins
-
+    origin: process.env.FRONTEND_URL || "*", // Allow specified frontend or any origin in development
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "UPDATE"], // This allows cookies to be sent with requests.
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "UPDATE"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
   })
 );
+
+// Handle preflight requests
+app.options('*', cors());
 
 app.use(cookieParser());
 app.set("view engine", "ejs");
